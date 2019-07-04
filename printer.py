@@ -12,8 +12,8 @@ import github
 import sqlite3
 from bs4 import BeautifulSoup
 
-g = Github("0efb53f221546cb0c93c6bf058ad7ac7aafa6cfa")
-tokens_pool = ['1fb4f65dab98d6a5424ce27061d371ace05b21eb']
+g = Github("your token github")
+tokens_pool = ['your token bitly']
 connection = sqlite3.connect('database1.db')
 c = connection.cursor()
 n=29
