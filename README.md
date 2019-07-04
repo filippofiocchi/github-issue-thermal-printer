@@ -123,7 +123,7 @@ now :
  ```
 python printer.py
  ```
-and if you have some open issue in your repository it will print the recipt with the information. If every things work make the program automatic by using crontab :
+and if you have some open issue in your repository it will print the receipt with the information. If every things work make the program automatic by using crontab :
  ```
 crontab -e
  ```
