@@ -86,9 +86,7 @@ Then you'll be prompt to select the specific driver you want to use for your pri
 
 For more information see: 
 https://learn.adafruit.com/networked-thermal-printer-using-cups-and-raspberry-pi/connect-and-configure-printer
-
 https://www.howtogeek.com/169679/how-to-add-a-printer-to-your-raspberry-pi-or-other-linux-computer/ 
-
 
 # Python script
 To access to your github account and print the issue's information you'll need a python code, first of all install python 3.7.0 or higher and set it as default, now you'll need your git-hub api token for the API , do  the same thing for the bitly API so create an  account if you haven't one yet and copy your personal  token, now before start printing you need a database in which store the url of all your issue's url, to create the data base in the home run:
@@ -107,12 +105,14 @@ then before run the orther python script you have to install some library
  sudo python -m pip install qrcode
  sudo python -m pip install lxml
 ```
-now before run the python file, with " nano printer.py "  insert your API tokens as string in the 2 variable:
+now before run the python file, you have to set 3 environment variable,2 with the github and bitly API tokens and one with the name of your database, to do that run :
 ```
-g = Github("your github token")
-tokens_pool = ['yout bitly token']
+export TOKEN_GITHUB='your github token'
+export TOKEN_BITLY='your bitlytoken'
+export DATABASE_NAME= 'the name of your database'
  ```
- then run printer.py
+ To set it permanently for all future bash sessions add such line to your .bashrc file in your $HOME directory.
+ Then run printer.py
  ```
 python printer.py
  ```
