@@ -1,6 +1,6 @@
 # GITHUB ISSUES THERMAL PRINTER 
 
-This project will allow  your raspberry pi with a thermal printer to print ,independently, a little receipt for every new issue open in one of your github's repository. The recepit will contain  title, repository, qrcode of the page and number of the new issue open.
+This project will allow  your raspberry pi with a thermal printer to print ,independently, a little receipt for every new issue open in one of your github's repository. The recepit will contain  title, repository, qrcode of the web page and number of the new issue open.
 
 My set up is a Mini Thermal Receipt Printer and a raspberry pi 3 with raspbian.
 
@@ -10,27 +10,27 @@ The first things to do is to connect and configure the thermal printer with the 
 ```
 sudo raspi-config
 ```
-In the configuration menu go to  "Interfacing Options” select “Serial.” Turn OFF the login hell over serial, and ENABLE the hardware serial port (No and yes respectively). Then reboot(type ' sudo reboot ')
+In the configuration menu go to  "Interfacing Options” select “Serial ”. Turn OFF the login hell over serial, and ENABLE the hardware serial port (No and yes respectively). Then reboot(type ' sudo reboot ')
 
 
 Now with  F-M jumper wires connect the thermal printer with the raspberry, the first GND to the pin  number 14, VH to the pin 02 ,now the green light on the thermal printer should flash. The other GND to the pin 06 and respectively the  RX and the TX to the pin number 08 and 10 (RX on the printer to TXD on the Pi, the TX pin on the printer connects to RXD on the Pi).
-Now if you have done every things in the right way it's enought to type  on the terminal of the raspberry:
+Now if you have done everythings in the right way it's enought to type on the terminal of the raspberry:
 ```
 stty -F /dev/serial0 19200
 echo -e "This is a test.\\n\\n\\n" > /dev/serial0
 ```
 This should print 'This is a test.'
 
-Now that the printer work we have to install some packages and to change some settings so that can start ther real work.
+Now that the printer work, you have to install some packages and to change some settings then can start ther real work.
 
 Install several packages ...
 ```
 sudo apt-get update
 sudo apt-get install libcups2-dev libcupsimage2-dev git build-essential cups system-config-printer
 ```
-This might take  some minutes.
+This might take a few minutes.
 
-When it's done download and install this thermal printer's filter of CUPS:
+When it's done, download and install this thermal printer's filter of CUPS:
 ```
 git clone https://github.com/adafruit/zj-58
 cd zj-58
@@ -46,7 +46,7 @@ and change the file /etc/cups/cupsd.conf with :
 ```
 sudo nano /etc/cups/cupsd.conf
 ```
-indide the file, in the section 
+inside the file, in the section 
 ```
 # Only listen for connections from the local machine
 Listen localhost:631
@@ -80,20 +80,20 @@ now scroll down  until reach 'location ' then in this section add the lines that
     Allow @local
     < /Location >
 ```
- You’ll need to restart the CUPS server. Do so with the following command:
+ You’ll need to restart the CUPS server. Type the command:
  ```
  sudo /etc/init.d/cups restart
  ```
  
-Once that you have restarted cups , by any computer you should acces to the administration panel by going with the browser to  http://[the Pi’s IP or hostname]:631
+Once that you have restarted cups , by any computer you should access to the administration panel by going with the browser to  http://[the Pi’s IP or hostname]:631
 
 When the page is open click on 'Administration'.
 
 In the Administration panel click on 'add printer', then should appear a windows that ask to enter username and password.
 
-Once loggin a list of discovered printers will be presented , select your and click 'continue'.
+Once loggin a list of discovered printers will be presented , select your, probably is the last one, and click 'continue'.
 
-Now you can edit the name location and desccription of the printer, and let 'share this printer' unchecked.
+Now you can edit the name, location and desccription of the printer, and let 'share this printer' unchecked.
 
 Then you'll be prompt to select the specific driver you want to use for your printer, click to 'add printer', the last configuration are some general print setting , click on 'set default option', and you'll be present to the administration page. Click on maintenance and select print test, now the thermal printer should print a test page with a logo.
 
@@ -104,12 +104,13 @@ https://www.howtogeek.com/169679/how-to-add-a-printer-to-your-raspberry-pi-or-ot
 
 
 # Python script
-To acces to yout github account and print the issue's information you'll need a python code, first of all install python 3.7 or + and set it as default, now you'll need your git-hub api token for the API , do  the same thing for the bitly API so create an  account if you haven't one yet and copy your personal  token, now before start printing you need a database in which store the url of all your issue, to create the data base in the home run:
+To acces to yout github account and print the issue's information you'll need a python code, first of all install python 3.7.0 or higher and set it as default, now you'll need your git-hub api token for the API , do  the same thing for the bitly API so create an  account if you haven't one yet and copy your personal  token, now before start printing you need a database in which store the url of all your issue's url, to create the data base in the home run:
+
  ```
  sudo python database1.py    
- ```
+```
 then before run the orther python script you have to install some library
- ```
+```
  sudo python -m pip install pyserial
  sudo python -m pip install pygithub
  sudo python -m pip install adafruit-circuitpython-thermal-printer
@@ -119,9 +120,11 @@ then before run the orther python script you have to install some library
  sudo python -m pip install beautifulsoup4
  sudo python -m pip install qrcode
  sudo python -m pip install lxml
- ```
+ 
+```
 now before run the python file, with " nano printer.py "  insert your API tokens as string in the 2 variable:
- ```
+ 
+```
 g = Github("your github token")
 tokens_pool = ['yout bitly token']
  ```
@@ -129,13 +132,13 @@ tokens_pool = ['yout bitly token']
  ```
 python printer.py
  ```
-and if you have some open issue in your repository it will print the receipt with the information. If every things work make the program automatic by using crontab :
- ```
+and if you have some open issue in your repository it will print the receipt with the informations. If everythings work, make the program automatic by using crontab (usually yet installed in raspbian) :
+```
 crontab -e
- ```
+```
 and at the end of the file add the line :
  ```
 */10 * * * * /usr/bin/python /home/pi/printer.py
 
  ```
-remember to leve a new line at the end save, now the raspberry will run the python script printer.py every 10  minutes.
+remember to leave a new line at the end and save, now the raspberry will run the python script printer.py every 10  minutes.
