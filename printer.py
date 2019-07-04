@@ -69,7 +69,7 @@ class Printer():
          self._printer.justify =adafruit_thermal_printer.JUSTIFY_CENTER         
          self._printer.print(' #'+self._n_issue )
          self._printer.feed(1)
-         subprocess.run(['lp','-d','thermalprinter', '-o', 'fit-to-page',self._qrcode_logo ])
+         subprocess.run(['lp','-d','name of your thermal printer', '-o', 'fit-to-page',self._qrcode_logo ])
          self._printer.feed(1)
          time.sleep(7)
 
