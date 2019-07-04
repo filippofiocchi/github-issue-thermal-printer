@@ -20,7 +20,7 @@ cursor = connection.cursor()
 number_character = 29
 
 class Printer():
-    def __init__(self,url):
+    def __init__(self,url) :
          ThermalPrinter = adafruit_thermal_printer.get_printer_class(2.69)
          uart = serial.Serial("/dev/ttyS0", baudrate=19200, timeout=3000)
          self._printer = ThermalPrinter(uart)
@@ -48,7 +48,7 @@ class Printer():
          self._title2 = str((self._title).strip())
          self._out = [(self._title2[i:i+number_character]) for i in range(0, len(self._title2), number_character)]
 
-    def print_receipt(self):
+    def print_receipt(self) :
          self._printer.size = adafruit_thermal_printer.SIZE_LARGE
          self._printer.justify = adafruit_thermal_printer.JUSTIFY_CENTER 
          self._printer.feed(1)
@@ -64,12 +64,12 @@ class Printer():
          self._printer.justify = adafruit_thermal_printer.JUSTIFY_CENTER         
          self._printer.print(' #'+self._n_issue )
          self._printer.feed(1)
-         subprocess.run(['lp','-d','thermalprinter', '-o', 'fit-to-page',self._qrcode_logo ])
+         subprocess.run(['lp','-d','name of your thermal printer', '-o', 'fit-to-page',self._qrcode_logo ])
          self._printer.feed(1)
          time.sleep(7)
 
 def get_url(url1) :
-     cursor.execute("SELECT * FROM database1 WHERE urls=?",(url1,))
+     cursor.execute("SELECT * FROM os.environ['DATABASE_NAME'] WHERE urls=?",(url1,))
      result=(cursor.fetchall())
      print(url1)
      if str(result) != '[]' :
@@ -78,10 +78,10 @@ def get_url(url1) :
          print('to print')
          printer = Printer(url1)
          printer.print_receipt()
-         cursor.execute(" INSERT INTO database1 VALUES (?)",(url1,))
+         cursor.execute(" INSERT INTO os.environ['DATABASE_NAME'] VALUES (?)",(url1,))
      connection.commit()   
 
-for repo in g.get_user().get_repos():
+for repo in g.get_user().get_repos() :
      reponame = ''
      matches = ''
      all_url = []
@@ -99,5 +99,5 @@ for repo in g.get_user().get_repos():
          urli = (str(all_url[i]))
          url = urli[2:-2]
          get_url(url)
-         i+=1
+         i += 1
 connection.close()        
