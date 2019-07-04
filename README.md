@@ -125,7 +125,7 @@ now before run the python file, with " nano printer.py "  insert your API tokens
 g = Github("your github token")
 tokens_pool = ['yout bitly token']
  ```
- 
+ then run printer.py
  ```
 python printer.py
  ```
