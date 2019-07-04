@@ -102,7 +102,7 @@ https://learn.adafruit.com/networked-thermal-printer-using-cups-and-raspberry-pi
 https://www.howtogeek.com/169679/how-to-add-a-printer-to-your-raspberry-pi-or-other-linux-computer/ 
 
 
-# PYTHON SCRIPT
+# Python script
 To acces to yout github account and print the issue's information you'll need a python code, first of all install python 3.7 or + and set it as default, now you'll need your git-hub api token for the API , do  the same thing for the bitly API so create an  account if you haven't one yet and copy your personal  token, now before start printing you need a database in which store the url of all your issue, to create the data base in the home run:
  ```
  sudo python database1.py    
