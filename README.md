@@ -21,7 +21,7 @@ echo -e "This is a test.\\n\\n\\n" > /dev/serial0
 ```
 This should print 'This is a test.'
 
-Now that the printer work we have to install some packages and to change some setting so that can start ther real work.
+Now that the printer work we have to install some packages and to change some settings so that can start ther real work.
 
 Install several packages ...
 ```
@@ -99,6 +99,7 @@ Then you'll be prompt to select the specific driver you want to use for your pri
 
 For more information see: 
 https://learn.adafruit.com/networked-thermal-printer-using-cups-and-raspberry-pi/connect-and-configure-printer
+
 https://www.howtogeek.com/169679/how-to-add-a-printer-to-your-raspberry-pi-or-other-linux-computer/ 
 
 
@@ -119,7 +120,12 @@ then before run the orther python script you have to install some library
  sudo python -m pip install qrcode
  sudo python -m pip install lxml
  ```
-now :
+now before run the python file, with " nano printer.py "  insert your API tokens as string in the 2 variable:
+ ```
+g = Github("your github token")
+tokens_pool = ['yout bitly token']
+ ```
+ 
  ```
 python printer.py
  ```
