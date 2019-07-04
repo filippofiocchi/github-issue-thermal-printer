@@ -132,7 +132,7 @@ tokens_pool = ['yout bitly token']
  ```
 python printer.py
  ```
-and if you have some open issue in your repository it will print the receipt with the informations. If everythings work, make the program automatic by using crontab (usually yet installed in raspbian) :
+and if you have some open issues in your repository it will print the receipt with the informations. If everythings work, make the program automatic by using crontab (usually yet installed in raspbian) :
 ```
 crontab -e
 ```
