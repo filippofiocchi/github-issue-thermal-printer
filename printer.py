@@ -17,9 +17,10 @@ g = Github(os.environ['TOKEN_GITHUB'])
 tokens_pool = [os.environ['TOKEN_BITLY']]
 connection = sqlite3.connect(os.environ['DATABASE_NAME'])
 cursor = connection.cursor()
-number_character = 29
+number_character_title= 29
+number_character_repository=10
 
-class Printer():
+class Printer() :
     def __init__(self,url) :
          ThermalPrinter = adafruit_thermal_printer.get_printer_class(2.69)
          uart = serial.Serial("/dev/ttyS0", baudrate=19200, timeout=3000)
@@ -46,18 +47,25 @@ class Printer():
          self._title = self._soup.find('span', class_="js-issue-title").text
          self._repository = self._soup.find('strong', itemprop="name").text
          self._title2 = str((self._title).strip())
-         self._out = [(self._title2[i:i+number_character]) for i in range(0, len(self._title2), number_character)]
-
+         self._title_array = [(self._title2[i:i+number_character_title]) for i in range(0, len(self._title2), number_character_title)]
+         self._repository_array= [(self._title2[i:i+number_character_repository]) for i in range(0, len(self._title2), number_character_repository)]
     def print_receipt(self) :
          self._printer.size = adafruit_thermal_printer.SIZE_LARGE
-         self._printer.justify = adafruit_thermal_printer.JUSTIFY_CENTER 
          self._printer.feed(1)
+         if len((self._repository).strip())<=9:
+             self._printer.justify = adafruit_thermal_printer.JUSTIFY_CENTER 
+             self._printer.print((self._repository).strip())
+         else :
+             self._printer.justify = adafruit_thermal_printer.JUSTIFY_LEFT
+             for i in range(len(self._repository_array)):
+                 self._printer.print(self._repository_array[i])
+                 time.sleep(2)
          self._printer.print((self._repository).strip())        
          self._printer.feed(1)
          self._printer.size = adafruit_thermal_printer.SIZE_MEDIUM
          self._printer.justify = adafruit_thermal_printer.JUSTIFY_LEFT
-         for i in range(len(self._out)):
-              self._printer.print(self._out[i])
+         for i in range(len(self._title_array)):
+              self._printer.print(self._title_array[i])
               time.sleep(2)
          self._printer.feed(1)
          self._printer.size = adafruit_thermal_printer.SIZE_MEDIUM
