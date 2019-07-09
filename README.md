@@ -80,8 +80,8 @@ now scroll down  until reach 'location ' then in this section add the lines that
  Once that you have restarted cups , by any computer you should access to the administration panel by going with the browser to  http://[the Pi’s IP or hostname]:631
 When the page is open click on 'Administration'.
 In the Administration panel click on 'add printer', then should appear a windows that ask to enter username and password.
-Once loggin a list of discovered printers will be presented , select your, probably is the last one, and click 'continue'.
-Now you can edit the name, location and desccription of the printer, and let 'share this printer' unchecked.
+Once loggin a list of discovered printers will be presented , select your, probably is the first, and click 'continue'.
+Now you can edit the name, location and desccription of the printer,as name use 'thermalprinter', and let 'share this printer' unchecked.
 Then you'll be prompt to select the specific driver you want to use for your printer, click to 'add printer', the last configuration are some general print setting , click on 'set default option', and you'll be present to the administration page. Click on maintenance and select print test, now the thermal printer should print a test page with a logo.
 
 For more information see: 
