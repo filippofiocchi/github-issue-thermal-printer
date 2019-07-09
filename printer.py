@@ -17,8 +17,13 @@ g = Github(os.environ['TOKEN_GITHUB'])
 tokens_pool = [os.environ['TOKEN_BITLY']]
 connection = sqlite3.connect(os.environ['DATABASE_NAME'])
 cursor = connection.cursor()
+<<<<<<< HEAD
 number_character_title= 29
 number_character_repository=11
+=======
+number_character_title = 29
+number_character_repository = 10
+>>>>>>> 58f712fd06c29a31666a46b01229fb5c0be25e95
 
 class Printer() :
     def __init__(self,url) :
@@ -27,7 +32,7 @@ class Printer() :
          self._printer = ThermalPrinter(uart)
          self._printer.warm_up()
          shortener = Shortener(tokens=tokens_pool, max_cache_size=8192)
-         urls=[url]
+         urls = [url]
          self._urlshort = shortener.shorten_urls(urls)
          self._url = url
          self._last = self._url.rfind('/')
@@ -48,7 +53,11 @@ class Printer() :
          self._repository = self._soup.find('strong', itemprop="name").text
          self._title2 = str((self._title).strip())
          self._title_array = [(self._title2[i:i+number_character_title]) for i in range(0, len(self._title2), number_character_title)]
+<<<<<<< HEAD
          self._repository_array= [(self._repository[i:i+number_character_repository]) for i in range(0, len(self._title2), number_character_repository)]
+=======
+         self._repository_array = [(self._title2[i:i+number_character_repository]) for i in range(0, len(self._title2), number_character_repository)]
+>>>>>>> 58f712fd06c29a31666a46b01229fb5c0be25e95
     def print_receipt(self) :
          self._printer.size = adafruit_thermal_printer.SIZE_LARGE
          self._printer.feed(1)
