@@ -105,12 +105,14 @@ then before run the orther python script you have to install some library
  sudo python -m pip install qrcode
  sudo python -m pip install lxml
 ```
-now before run the python file, with " nano printer.py "  insert your API tokens as string in the 2 variable:
+now before run the python file, you have to set 3 environment variable,2 with the github and bitly API tokens and one with the name of your database, to do that run :
 ```
-g = Github("your github token")
-tokens_pool = ['yout bitly token']
+export TOKEN_GITHUB='your github token'
+export TOKEN_BITLY='your bitlytoken'
+export DATABASE_NAME= 'the name of your database'
  ```
- then run printer.py
+ To set it permanently for all future bash sessions add such line to your .bashrc file in your $HOME directory.
+ Then run printer.py
  ```
 python printer.py
  ```
