@@ -18,7 +18,7 @@ tokens_pool = [os.environ['TOKEN_BITLY']]
 connection = sqlite3.connect(os.environ['DATABASE_NAME'])
 cursor = connection.cursor()
 number_character_title = 29
-number_character_repository =10
+number_character_repository = 10
 
 class Printer() :
     def __init__(self,url) :
