@@ -98,7 +98,7 @@ export DATABASE_NAME='the name of your database'
 To set it permanently for all future bash sessions add such line to your .bashrc file in your $HOME directory.
 To create the data base in the home run:
  ```
- sudo python database1.py    
+ sudo python database.py    
 ```
 then before run the orther python script you have to install some library
 ```
