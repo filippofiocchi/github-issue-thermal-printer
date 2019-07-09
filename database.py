@@ -4,7 +4,7 @@ connection = sqlite3.connect(os.environ['DATABASE_NAME'])
 cursor = connection.cursor()
 
 
-cursor.execute('''CREATE TABLE os.environ['DATABASE_NAME']
+cursor.execute('''CREATE TABLE URL
             (urls text)''')
 connection.commit()
 connection.close()
