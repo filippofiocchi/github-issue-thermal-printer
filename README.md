@@ -94,12 +94,12 @@ You have to set 3 environment variable,2 with the github and bitly API tokens an
 ```
 export TOKEN_GITHUB='your github token'
 export TOKEN_BITLY='your bitlytoken'
-export DATABASE_NAME= 'the name of your database'
+export DATABASE_NAME='the name of your database.db'
  ```
 To set it permanently for all future bash sessions add such line to your .bashrc file in your $HOME directory.
 Now create the data base in the home, run:
  ```
- sudo python database1.py    
+ sudo python database.py    
 ```
 then before run the orther python script you have to install some library
 ```
