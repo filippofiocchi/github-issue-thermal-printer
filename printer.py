@@ -17,7 +17,7 @@ g = Github(os.environ['TOKEN_GITHUB'])
 tokens_pool = [os.environ['TOKEN_BITLY']]
 connection = sqlite3.connect(os.environ['DATABASE_NAME'])
 cursor = connection.cursor()
-number_character_title= 29
+number_character_title= 27
 number_character_repository=11
 class Printer() :
     def __init__(self,url) :
@@ -42,7 +42,7 @@ class Printer() :
          new_image.save(self._qrcode_logo)
          self.url = url
          self._html = urlopen(self._url)
-         self._soup = BeautifulSoup(self._html,'lxml')
+         self._soup = BeautifulSoup(self._html,'html.parser')
          self._title = self._soup.find('span', class_="js-issue-title").text
          self._repository = self._soup.find('strong', itemprop="name").text
          self._title2 = str((self._title).strip())
@@ -51,21 +51,22 @@ class Printer() :
     def print_receipt(self) :
          self._printer.size = adafruit_thermal_printer.SIZE_LARGE
          self._printer.feed(1)
-         if len((self._repository).strip())<=9:
+         if len((self._repository).strip())<9:
              self._printer.justify = adafruit_thermal_printer.JUSTIFY_CENTER 
-             self._printer.print((self._repository).strip())
+             self._printer.print(self._repository)
+             time.sleep(20)
          else :
              self._printer.justify = adafruit_thermal_printer.JUSTIFY_LEFT
              for i in range(len(self._repository_array)):
                  self._printer.print(self._repository_array[i])
-                 time.sleep(2)        
+                 time.sleep(20)        
          self._printer.feed(1)
          self._printer.size = adafruit_thermal_printer.SIZE_MEDIUM
          self._printer.justify = adafruit_thermal_printer.JUSTIFY_LEFT
          for i in range(len(self._title_array)):
               self._printer.print(self._title_array[i])
-              time.sleep(2)
-         self._printer.feed(1)
+              time.sleep(20)
+         self._printer.feed(2)
          self._printer.size = adafruit_thermal_printer.SIZE_MEDIUM
          self._printer.justify = adafruit_thermal_printer.JUSTIFY_CENTER         
          self._printer.print(' #'+self._n_issue )
