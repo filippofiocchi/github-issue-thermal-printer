@@ -109,6 +109,10 @@ export TOKEN_GITHUB='your github token'
 export TOKEN_BITLY='your bitlytoken'
 export DATABASE_NAME='the name of your database'
  ```
+Install a library of python :
+ ```
+pip3 install subprocess.run
+ ```
 Then run the run.sh file
  ```
 ./run.sh
