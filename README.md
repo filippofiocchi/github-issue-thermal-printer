@@ -82,39 +82,36 @@ When the page is open click on 'Administration'.
 In the Administration panel click on 'add printer', then should appear a windows that ask to enter username and password.
 Once loggin a list of discovered printers will be presented , select your, probably is the first, and click 'continue'.
 Now you can edit the name, location and desccription of the printer,as name use 'thermalprinter', and let 'share this printer' unchecked.
-Then you'll be prompt to select the specific driver you want to use for your printer, click to 'add printer', the last configuration are some general print setting , click on 'set default option', and you'll be present to the administration page. Click on maintenance and select print test, now the thermal printer should print a test page with a logo.
+Then you'll be prompt to select the specific driver you want to use for your printer, it's the last name select it , and click to 'add printer', the last configuration are some general print setting , click on 'set default option', and you'll be present to the administration page. Click on maintenance and select print test, now the thermal printer should print a test page with a logo.
 
 For more information see: 
 https://learn.adafruit.com/networked-thermal-printer-using-cups-and-raspberry-pi/connect-and-configure-printer
 https://www.howtogeek.com/169679/how-to-add-a-printer-to-your-raspberry-pi-or-other-linux-computer/ 
 
 # Python script
-To access to your github account and print the issue's information you'll need a python code, first of all install python 3.7.0 or higher and set it as default, now you'll need your git-hub api token for the API , do  the same thing for the bitly API so create an  account if you haven't one yet and copy your personal  token, now before start printing you need a database in which store the url of all your issue's url,now before run the python files, you have to set 3 environment variable,2 with the github and bitly API tokens and one with the name of your database, to do that run :
+To access to your github account and print the issue's information you'll need a python code, so first of all install python 3.7.0 or higher and set it as default, now you'll need your git-hub api token for the API , do  the same thing for the bitly API so create an account if you haven't one yet and copy your personal  token.
+Clone this github repository using git :
 ```
+git clone https://github.com/filippofiocchi/github-issue-thermal-printer.git
+```
+Now before create the database, you have to set an environment variable with the name of your database, to do that run :
+```
+export DATABASE_NAME='the name of your database'
+ ```
+To set it permanently for all future bash sessions add such line to your .bashrc file in your $HOME directory.
+Use "cd github-issue-thermal-printer directory"  and here run :
+ ```
+ sudo python database.py    
+```
+Always in this direcotry modify the run.sh file with nano, you have to set some variable , 2 with the tokens of the github and bitly API and one again with the name of your database.
+ ```
 export TOKEN_GITHUB='your github token'
 export TOKEN_BITLY='your bitlytoken'
 export DATABASE_NAME='the name of your database'
  ```
-To set it permanently for all future bash sessions add such line to your .bashrc file in your $HOME directory.
-To create the data base in the home run:
+Then run the run.sh file
  ```
- sudo python database.py    
-```
-then before run the orther python script you have to install some library
-```
- sudo python -m pip install pyserial
- sudo python -m pip install pygithub
- sudo python -m pip install adafruit-circuitpython-thermal-printer
- sudo python -m pip install subprocess.run
- sudo python -m pip install Pillow
- sudo python -m pip install bitlyshortener
- sudo python -m pip install beautifulsoup4
- sudo python -m pip install qrcode
- sudo python -m pip install lxml
-```
-Then run printer.py
- ```
-python printer.py
+./run.sh
  ```
 and if you have some open issues in your repository it will print the receipt with the informations. If everythings work, make the program automatic by using crontab (usually yet installed in raspbian) :
 ```
@@ -122,7 +119,7 @@ crontab -e
 ```
 and at the end of the file add the line :
  ```
-*/10 * * * * /usr/bin/python /home/pi/printer.py
-
+ */10 * * * * /home/pi/github-issue-thermal-printer/run.sh
+ 
  ```
 remember to leave a new line at the end and save, now the raspberry will run the python script printer.py every 10  minutes.
