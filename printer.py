@@ -26,8 +26,8 @@ class Printer() :
          shortener = Shortener(tokens=tokens_pool, max_cache_size=8192)
          urls = [url]
          self._urlshort = shortener.shorten_urls(urls)
-         self._last = self._url.rfind('/')
-         self._n_issue = self._url[self._last+1:len(self._url)]
+         self._last = url.rfind('/')
+         self._n_issue = url[self._last+1:len(url)]
          qrcode_image = qrcode.make(self._urlshort[0])
          mode = 'RGB' 
          size = (200, 200)
@@ -37,7 +37,6 @@ class Printer() :
          new_image.paste(resize_qrcode_image, (int(200/2-100/2), int(200/2-100/2)))
          self._qrcode_logo = '/home/pi/qrcode.png'
          new_image.save(self._qrcode_logo)
-         self.url = url
          self._title = title
          self._repository = reponame
          self._title2 = (self._title).strip()
