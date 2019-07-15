@@ -87,13 +87,11 @@ def get_url(url1) :
          printer.print_receipt()
          cursor.execute(" INSERT INTO URL  VALUES (?)",(url1,))
      connection.commit()   
-
-for repo in g.get_user().get_repos() :
-     reponame = ''
+org = g.get_organization(os.environ['NAME_ORGANIZZATION'])
+for repo in org.get_repos() :
      matches = ''
      all_url = []
      reponame = str(repo.name)
-     repo = g.get_user().get_repo(reponame)
      url = repo.issues_url
      url_base = url[0:8]+url[12:22]+url[28:-9]
      pattern = re.compile(r'[a-zA-Z=,\" (]*(?P<number>[0-9]+)[)]+')
