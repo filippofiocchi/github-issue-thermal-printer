@@ -96,7 +96,7 @@ for repo in org.get_repos() :
          match = str(pattern.findall(p))
          all_url.append([url_base+'/'+match[2:-2]])
          last_character=p.rfind(',')
-         match2= match1[13:(last_character-1)]
+         match2= p[13:(last_character-1)]
          all_title.append(match2)
      i = 0
      while i < len(all_url) :
