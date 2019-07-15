@@ -5,12 +5,10 @@ import subprocess
 import time
 from PIL import Image, ImageDraw
 from bitlyshortener import Shortener
-from urllib.request import urlopen
 import re
 from github import Github
 import github
 import sqlite3
-from bs4 import BeautifulSoup
 import os
 
 g = Github(os.environ['TOKEN_GITHUB'])
@@ -20,7 +18,7 @@ cursor = connection.cursor()
 number_character_title= 27
 number_character_repository=11
 class Printer() :
-    def __init__(self,url) :
+    def __init__(self,url,title,reponame) :
          ThermalPrinter = adafruit_thermal_printer.get_printer_class(2.69)
          uart = serial.Serial("/dev/ttyS0", baudrate=19200, timeout=3000)
          self._printer = ThermalPrinter(uart)
@@ -28,7 +26,6 @@ class Printer() :
          shortener = Shortener(tokens=tokens_pool, max_cache_size=8192)
          urls = [url]
          self._urlshort = shortener.shorten_urls(urls)
-         self._url = url
          self._last = self._url.rfind('/')
          self._n_issue = self._url[self._last+1:len(self._url)]
          qrcode_image = qrcode.make(self._urlshort[0])
@@ -41,13 +38,11 @@ class Printer() :
          self._qrcode_logo = '/home/pi/qrcode.png'
          new_image.save(self._qrcode_logo)
          self.url = url
-         self._html = urlopen(self._url)
-         self._soup = BeautifulSoup(self._html,'html.parser')
-         self._title = self._soup.find('span', class_="js-issue-title").text
-         self._repository = self._soup.find('strong', itemprop="name").text
-         self._title2 = str((self._title).strip())
+         self._title = title
+         self._repository = reponame
+         self._title2 = (self._title).strip()
          self._title_array = [(self._title2[i:i+number_character_title]) for i in range(0, len(self._title2), number_character_title)]
-         self._repository_array= [(self._repository[i:i+number_character_repository]) for i in range(0, len(self._repository), number_character_repository)]
+         self._repository_array = [(self._repository[i:i+number_character_repository]) for i in range(0, len(self._repository), number_character_repository)]
     def print_receipt(self) :
          self._printer.size = adafruit_thermal_printer.SIZE_LARGE
          self._printer.feed(1)
@@ -75,7 +70,7 @@ class Printer() :
          self._printer.feed(1)
          time.sleep(7)
 
-def get_url(url1) :
+def get_url(url1,title1,reponame1) :
      cursor.execute("SELECT * FROM URL WHERE urls=?",(url1,))
      result=(cursor.fetchall())
      print(url1)
@@ -83,7 +78,7 @@ def get_url(url1) :
          print('already print')
      else :
          print('to print')
-         printer = Printer(url1)
+         printer = Printer(url1,title1,reponame1)
          printer.print_receipt()
          cursor.execute(" INSERT INTO URL  VALUES (?)",(url1,))
      connection.commit()   
@@ -91,6 +86,7 @@ org = g.get_organization(os.environ['NAME_ORGANIZZATION'])
 for repo in org.get_repos() :
      matches = ''
      all_url = []
+     all_title=[]
      reponame = str(repo.name)
      url = repo.issues_url
      url_base = url[0:8]+url[12:22]+url[28:-9]
@@ -99,10 +95,14 @@ for repo in org.get_repos() :
          p = str(r)
          match = str(pattern.findall(p))
          all_url.append([url_base+'/'+match[2:-2]])
+         last_character=p.rfind(',')
+         match2= match1[13:(last_character-1)]
+         all_title.append(match2)
      i = 0
      while i < len(all_url) :
          urli = (str(all_url[i]))
          url = urli[2:-2]
-         get_url(url)
+         title = (str(all_title[i]))
+         get_url(url,title,reponame)
          i += 1
 connection.close()        
