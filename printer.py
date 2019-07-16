@@ -88,7 +88,7 @@ for repo in org.get_repos() :
      reponame = str(repo.name)
      url = repo.issues_url
      url_base = url[0:8]+url[12:22]+url[28:-9]
-     for  r in repo.get_issues():
+     for  issue in repo.get_issues():
         if issue.pull_request == None:
             issue_title=issue.title
             match2=issue.title
