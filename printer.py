@@ -83,20 +83,18 @@ def get_url(url1,title1,reponame1) :
      connection.commit()   
 org = g.get_organization(os.environ['NAME_ORGANIZZATION'])
 for repo in org.get_repos() :
-     matches = ''
      all_url = []
-     all_title=[]
+     all_title = []
      reponame = str(repo.name)
      url = repo.issues_url
      url_base = url[0:8]+url[12:22]+url[28:-9]
-     pattern = re.compile(r'[a-zA-Z=,\" (]*(?P<number>[0-9]+)[)]+')
      for  r in repo.get_issues():
-         p = str(r)
-         match = str(pattern.findall(p))
-         all_url.append([url_base+'/'+match[2:-2]])
-         last_character=p.rfind(',')
-         match2= p[13:(last_character-1)]
-         all_title.append(match2)
+        if issue.pull_request == None:
+            issue_title=issue.title
+            match2=issue.title
+            all_title.append(match2)
+            match = issue.number
+            all_url.append([url_base+'/'+str(match)])
      i = 0
      while i < len(all_url) :
          urli = (str(all_url[i]))
