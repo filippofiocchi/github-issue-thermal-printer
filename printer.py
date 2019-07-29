@@ -15,8 +15,6 @@ g = Github(os.environ['TOKEN_GITHUB'])
 tokens_pool = [os.environ['TOKEN_BITLY']]
 connection = sqlite3.connect(os.environ['DATABASE_NAME'])
 cursor = connection.cursor()
-number_character_title= 27
-number_character_repository=11
 class Printer() :
     def __init__(self,url,title,reponame) :
          ThermalPrinter = adafruit_thermal_printer.get_printer_class(2.69)
@@ -39,36 +37,39 @@ class Printer() :
          new_image.save(self._qrcode_logo)
          self._title = title
          self._repository = reponame
-         self._title2 = (self._title).strip()
-         self._title_array = [(self._title2[i:i+number_character_title]) for i in range(0, len(self._title2), number_character_title)]
-         self._repository_array = [(self._repository[i:i+number_character_repository]) for i in range(0, len(self._repository), number_character_repository)]
     def print_receipt(self) :
-         self._printer.size = adafruit_thermal_printer.SIZE_LARGE
-         self._printer.feed(1)
-         if len((self._repository).strip())<9:
-             self._printer.justify = adafruit_thermal_printer.JUSTIFY_CENTER 
-             self._printer.print(self._repository)
-             time.sleep(20)
-         else :
+         if len((self._repository).strip())<11:
+             self._printer.size = adafruit_thermal_printer.SIZE_MEDIUM
+             self._printer.justify = adafruit_thermal_printer.JUSTIFY_CENTER
+             self._printer.print((self._repository).strip()+' #'+ self._n_issue )
+             self._printer.size = adafruit_thermal_printer.SIZE_MEDIUM
              self._printer.justify = adafruit_thermal_printer.JUSTIFY_LEFT
-             for i in range(len(self._repository_array)):
-                 self._printer.print(self._repository_array[i])
-                 time.sleep(20)        
-         self._printer.feed(1)
-         self._printer.size = adafruit_thermal_printer.SIZE_MEDIUM
-         self._printer.justify = adafruit_thermal_printer.JUSTIFY_LEFT
-         for i in range(len(self._title_array)):
-              self._printer.print(self._title_array[i])
-              time.sleep(20)
-         self._printer.feed(2)
-         self._printer.size = adafruit_thermal_printer.SIZE_MEDIUM
-         self._printer.justify = adafruit_thermal_printer.JUSTIFY_CENTER         
-         self._printer.print(' #'+self._n_issue )
+             self._printer.feed(1)
+             if len(self._title) < 16:
+                 self._printer.print(self._title)
+             else :
+                 self._printer.print(self._title[0:16]+'...')
+         else :
+             self._printer.size = adafruit_thermal_printer.SIZE_MEDIUM
+             self._printer.justify = adafruit_thermal_printer.JUSTIFY_CENTER
+             self._printer.print(self._repository[0:10]+'...')
+             self._printer.size = adafruit_thermal_printer.SIZE_MEDIUM
+             self._printer.justify = adafruit_thermal_printer.JUSTIFY_LEFT
+             self._printer.feed(1)
+             if len(self._title) < 16:
+                 self._printer.print(self._title)
+             else :
+                 self._printer.print(self._title[0:16]+'...')
+             time.sleep(7)
+             self._printer.feed(1)
+             self._printer.size = adafruit_thermal_printer.SIZE_MEDIUM
+             self._printer.justify = adafruit_thermal_printer.JUSTIFY_CENTER         
+             self._printer.print(' #'+self._n_issue )
+         time.sleep(5)
          self._printer.feed(1)
          subprocess.run(['lp','-d','thermalprinter', '-o', 'fit-to-page',self._qrcode_logo ])
          self._printer.feed(1)
          time.sleep(7)
-
 def get_url(url1,title1,reponame1) :
      cursor.execute("SELECT * FROM URL WHERE urls=?",(url1,))
      result=(cursor.fetchall())
