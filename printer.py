@@ -27,7 +27,6 @@ class Printer() :
          self._last = url.rfind('/')
          self._n_issue = url[self._last+1:len(url)]
          qrcode_image = qrcode.make(self._urlshort[0])
-         new_image.paste(resize_qrcode_image, (int(200/2-100/2), int(200/2-100/2)))
          self._qrcode_logo = '/home/pi/qrcode.png'
          qrcode_image.save(self._qrcode_logo)
          self._title = title
